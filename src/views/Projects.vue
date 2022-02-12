@@ -1,0 +1,15 @@
+<template>
+  <div class="projects">
+    <h1>
+      Projects
+    </h1>
+  </div>
+</template>
+
+<script lang="ts">
+import Vue from "vue";
+
+export default Vue.extend({
+  name: "projects",
+});
+</script>
