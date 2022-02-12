@@ -14,8 +14,18 @@
       ></v-app-bar
     >
 
-    <v-navigation-drawer temporary v-model="drawer" app class="indigo"
-      ><p>test</p></v-navigation-drawer
+    <v-navigation-drawer temporary v-model="drawer" app class="indigo">
+      <v-list dark>
+        <v-list-item v-for="link in links" :key="link.text" router :to="link.route">
+          <v-list-item-action><v-icon>{{link.icon}}</v-icon></v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-item>
+              {{link.text}}
+            </v-list-item-item>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer
     >
   </nav>
 </template>
@@ -25,6 +35,11 @@ export default {
   data() {
     return {
       drawer: false,
+      links: [
+        { icon: 'mdi-view-dashboard', text: 'Dashboard', route: '/' },
+        { icon: 'mdi-folder', text: 'My Projects', route: '/projects' },
+        { icon: 'mdi-account', text: 'Team', route: '/team' },
+      ]
     };
   },
 };
