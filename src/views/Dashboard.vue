@@ -5,14 +5,25 @@
     </h1>
     <v-container class="my-15">
       <v-row wrap class="mb-3">
-        <v-btn small flat depressed class="grey--text" @click="sortBy('title')">
-          <v-icon left small>mdi-folder</v-icon>
-          <span class="caption text-lowercase">By project name</span>
-        </v-btn>
-        <v-btn small flat depressed class="grey--text" @click="sortBy('person')">
-          <v-icon left small>mdi-account</v-icon>
-          <span class="caption text-lowercase">By person</span>
-        </v-btn>
+        <v-tooltip top>
+          <template v-slot:activator="{ on }">
+            <v-btn small flat depressed class="grey--text" @click="sortBy('title')" v-on="on">
+              <v-icon left small>mdi-folder</v-icon>
+              <span class="caption text-lowercase">By project name</span>
+            </v-btn>
+          </template>
+          <span>Sorts projects by project name</span>
+        </v-tooltip>
+        <v-tooltip top>
+          <template v-slot:activator="{ on }">
+            <v-btn small flat depressed class="grey--text" @click="sortBy('person')" v-on="on">
+              <v-icon left small>mdi-account</v-icon>
+              <span class="caption text-lowercase">By person</span>
+            </v-btn>
+          </template>
+          <span>Sorts projects by person</span>
+        </v-tooltip>
+        
       </v-row>
       <v-card  flat v-for="project in projects" :key="project.title">
         <v-row wrap :class="`pa-3 project ${project.status}`">
