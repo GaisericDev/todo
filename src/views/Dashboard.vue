@@ -4,6 +4,16 @@
       Dashboard
     </h1>
     <v-container class="my-15">
+      <v-row wrap class="mb-3">
+        <v-btn small flat depressed class="grey--text" @click="sortBy('title')">
+          <v-icon left small>mdi-folder</v-icon>
+          <span class="caption text-lowercase">By project name</span>
+        </v-btn>
+        <v-btn small flat depressed class="grey--text" @click="sortBy('person')">
+          <v-icon left small>mdi-account</v-icon>
+          <span class="caption text-lowercase">By person</span>
+        </v-btn>
+      </v-row>
       <v-card  flat v-for="project in projects" :key="project.title">
         <v-row wrap :class="`pa-3 project ${project.status}`">
           <v-col cols="12" md="6">
@@ -42,6 +52,12 @@ export default Vue.extend({
         { title: 'Design video thumbnails', person: 'Ryu', due: '20th Dec 2018', status: 'complete', content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!'},
         { title: 'Create a community forum', person: 'Gouken', due: '20th Oct 2018', status: 'overdue', content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!'},
       ]
+    }
+  },
+  methods: {
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    sortBy(prop:any){
+      this.projects.sort((a:any, b:any)=> a[prop] < b[prop] ? -1 : 1);
     }
   }
 });
