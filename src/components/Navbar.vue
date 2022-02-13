@@ -31,7 +31,9 @@
 </template>
 
 <script lang="ts">
-export default {
+import Vue from "vue";
+export default Vue.extend({
+  name: "Navbar",
   data() {
     return {
       drawer: false,
@@ -40,9 +42,9 @@ export default {
         { icon: 'mdi-folder', text: 'My Projects', route: '/projects' },
         { icon: 'mdi-account', text: 'Team', route: '/team' },
       ]
-    };
+    }
   },
-};
+})
 </script>
 
 <style>

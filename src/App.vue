@@ -17,3 +17,9 @@ export default Vue.extend({
   }),
 });
 </script>
+
+<style>
+  .theme--light.v-application {
+    background: #f5f5f5 !important;
+  }
+</style>

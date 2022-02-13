@@ -1,9 +1,9 @@
 <template>
   <div class="projects">
-    <h1 class="subheading grey--text">
+    <h1 class="subtitle-1 grey--text">
       Projects
     </h1>
-    <v-container class="my-5">
+    <v-container class="my-15">
       content
     </v-container>
   </div>
