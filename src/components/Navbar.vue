@@ -15,6 +15,16 @@
     >
 
     <v-navigation-drawer temporary v-model="drawer" app class="indigo">
+        <v-row >
+  <v-col class="mt-5 text-center">
+    <v-avatar size="100">
+      <img src="/avatar-1.png" alt="" />
+    </v-avatar>
+    <p class="white--text text-subtitle-1 mt-1">
+      Gaiseric
+    </p>
+  </v-col >
+</v-row >
       <v-list dark>
         <v-list-item v-for="link in links" :key="link.text" router :to="link.route">
           <v-list-item-action><v-icon>{{link.icon}}</v-icon></v-list-item-action>
