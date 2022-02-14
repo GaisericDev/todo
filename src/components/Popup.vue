@@ -35,6 +35,9 @@
 <script lang="ts">
 import Vue from 'vue'
 import moment from 'moment'
+import db from "@/fb"
+import { addDoc, collection, setDoc } from '@firebase/firestore/dist/lite'
+
 type VForm = Vue & {
     validate: () => boolean
 }
@@ -51,9 +54,18 @@ export default Vue.extend({
         }
     },
     methods: {
-        submit(){
+        async submit():Promise<void>{
             if((this.$refs.form as VForm).validate()){
-                console.log(this.title, this.content, typeof this.due);
+                const project = {
+                    title: this.title,
+                    content: this.content,
+                    due: moment(this.due).format("Do MMMM YYYY"),
+                    person: "Gaiseric",
+                    status: "ongoing"
+                }
+                db.collection("projects").add(project).then(()=>{
+                    console.log("Added to db");
+                })
             }
         }
     },
