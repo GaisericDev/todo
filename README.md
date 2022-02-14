@@ -22,4 +22,9 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### Tunneling
+```
+ngrok.exe http 8080 -host-header="localhost:8080"
+```
 # todo
