@@ -69,6 +69,7 @@ export default Vue.extend({
                 db.collection("projects").add(project).then(()=>{
                     this.loading = false;
                     this.dialog = false;
+                    this.$emit("projectAdded");
                 })
             }
         }

@@ -1,5 +1,26 @@
 <template>
   <nav>
+    <!-- Snackbar --> 
+    <v-snackbar
+      v-model="snackbar"
+      :timeout="4000"
+      top
+      color="success"
+    >
+      Awesome! You added a new project.
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="white"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+    <!-- Navbar -->
     <v-app-bar flat app class="text-uppercase grey--text">
       <!-- Logo -->
       <v-app-bar-nav-icon class="grey--text" @click="drawer = !drawer"></v-app-bar-nav-icon>
@@ -41,7 +62,7 @@
       </v-row >
       <v-row>
         <v-col class="mt-4 mb-3 text-center">
-           <Popup/>
+           <Popup @projectAdded="snackbar=true"/>
         </v-col>
       </v-row>
       <v-list dark>
@@ -71,7 +92,8 @@ export default Vue.extend({
         { icon: 'mdi-view-dashboard', text: 'Dashboard', route: '/' },
         { icon: 'mdi-folder', text: 'My Projects', route: '/projects' },
         { icon: 'mdi-account', text: 'Team', route: '/team' },
-      ]
+      ],
+      snackbar: false
     }
   },
 })
