@@ -5,7 +5,7 @@
     </h1>
     <v-container class="my-15">
       <v-expansion-panels >
-      <v-expansion-panel class="brown--text" v-for="project in myProjects" :key="project.title">
+      <v-expansion-panel class="brown--text" v-for="project in myProjects" :key="project.id">
         <v-expansion-panel-header>
             {{project.title}}
         </v-expansion-panel-header>
@@ -23,23 +23,14 @@
 
 <script lang="ts">
 import Vue from "vue";
-type Project = {
-  title:string,
-  person: string,
-  due: string,
-  status:string,
-  content:string
-}
+import Project from "@/types/Project"
+import db from "@/fb"
+
 export default Vue.extend({
   name: "projects",
   data(){
     return {
-      projects: [
-        { title: 'Create smart contract', person: 'Gaiseric', due: '12th Mar 2022', status: 'ongoing', content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!'},
-        { title: 'Code up the homepage', person: 'Chun Li', due: '15th Feb 2022', status: 'complete', content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!'},
-        { title: 'Design video thumbnails', person: 'Ryu', due: '20th Feb 2022', status: 'complete', content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!'},
-        { title: 'Create a community forum', person: 'Gouken', due: '20th Oct 2021', status: 'overdue', content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!'},
-      ] as Project[]
+      projects: [] as Project[]
     }
   },
   computed: {
@@ -48,6 +39,21 @@ export default Vue.extend({
         return project.person === 'Gaiseric'
       })
     }
+  },
+  created(){
+    //every time something gets added in db, we receive the changes from a snapshot taken from the db
+    db.collection("projects").onSnapshot((res)=>{
+      const changes = res.docChanges();
+      changes.forEach(change => {
+        //type can be added, removed, modified afaik
+        if(change.type == "added"){
+          this.projects.push({
+            ...(change.doc.data() as Project), //using spread operator here because we also want the project id to be used as a unique identifier
+            id: change.doc.id
+          });
+        }
+      });
+    })
   }
 });
 </script>

@@ -25,7 +25,7 @@
         </v-tooltip>
         
       </v-row>
-      <v-card  flat v-for="project in projects" :key="project.title">
+      <v-card  flat v-for="project in projects" :key="project.id">
         <v-row wrap :class="`pa-3 project ${project.status}`">
           <v-col cols="12" md="6">
             <div class="caption grey--text">Project title</div>
@@ -52,17 +52,14 @@
 
 <script lang="ts">
 import Vue from "vue";
+import db from "@/fb"
+import Project from "@/types/Project"
 
 export default Vue.extend({
   name: "Dashboard",
   data(){
     return {
-      projects: [
-        { title: 'Create smart contract', person: 'Gaiseric', due: '12th Mar 2022', status: 'ongoing', content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!'},
-        { title: 'Code up the homepage', person: 'Chun Li', due: '15th Feb 2022', status: 'complete', content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!'},
-        { title: 'Design video thumbnails', person: 'Ryu', due: '20th Feb 2022', status: 'complete', content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!'},
-        { title: 'Create a community forum', person: 'Gouken', due: '20th Oct 2021', status: 'overdue', content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!'},
-      ]
+      projects: [] as Project[]
     }
   },
   methods: {
@@ -70,6 +67,21 @@ export default Vue.extend({
     sortBy(prop:any){
       this.projects.sort((a:any, b:any)=> a[prop] < b[prop] ? -1 : 1);
     }
+  },
+  created(){
+    //every time something gets added in db, we receive the changes from a snapshot taken from the db
+    db.collection("projects").onSnapshot((res)=>{
+      const changes = res.docChanges();
+      changes.forEach(change => {
+        //type can be added, removed, modified afaik
+        if(change.type == "added"){
+          this.projects.push({
+            ...(change.doc.data() as Project), //using spread operator here because we also want the project id to be used as a unique identifier
+            id: change.doc.id
+          });
+        }
+      });
+    })
   }
 });
 </script>

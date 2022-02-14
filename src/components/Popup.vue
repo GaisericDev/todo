@@ -36,11 +36,8 @@
 import Vue from 'vue'
 import moment from 'moment'
 import db from "@/fb"
-import { addDoc, collection, setDoc } from '@firebase/firestore/dist/lite'
+import VForm from "../types/VForm"
 
-type VForm = Vue & {
-    validate: () => boolean
-}
 export default Vue.extend({
     name: "Popup",
     data(){

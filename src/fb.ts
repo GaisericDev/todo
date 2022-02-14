@@ -1,6 +1,8 @@
 // Import the functions you need from the SDKs you need
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/firestore'
+import apiKey from "../secret"
+
 // import { initializeApp } from "firebase/app";
 // import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
 // TODO: Add SDKs for Firebase products that you want to use
@@ -8,7 +10,7 @@ import 'firebase/compat/firestore'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyC2nZSda3BdMHolOQMDbZubxcPv_yFBDfw",
+  apiKey: `${apiKey}`,
   authDomain: "todo-jack-30b16.firebaseapp.com",
   projectId: "todo-jack-30b16",
   storageBucket: "todo-jack-30b16.appspot.com",
@@ -19,5 +21,5 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = firebase.initializeApp(firebaseConfig);
 const db = app.firestore();
-db.settings({timestampsInSnapshots: true});
+// db.settings({timestampsInSnapshots: true});
 export default db;
