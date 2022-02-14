@@ -10,6 +10,19 @@
             <v-form class="px-3">
                 <v-text-field label="Title" v-model="title" prepend-icon="mdi-folder"></v-text-field>
                 <v-textarea label="Information" v-model="content" prepend-icon="mdi-pencil"></v-textarea>
+                <v-menu>
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                            label="Due date"
+                            prepend-icon="mdi-calendar"
+                            v-bind="attrs"
+                            v-on="on"
+                            :value="formattedDate"
+                        ></v-text-field>
+                    </template>
+                    <v-date-picker v-model="due"></v-date-picker>
+                </v-menu>
+                <v-spacer></v-spacer>
                 <v-btn class="success mx-0 mt-3" @click="submit">Add Project</v-btn>
             </v-form>
         </v-card-text>
@@ -20,17 +33,25 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import moment from 'moment'
+
 export default Vue.extend({
     name: "Popup",
     data(){
         return {
             title: "",
-            content: ""
+            content: "",
+            due: null as null | string
         }
     },
     methods: {
         submit(){
-            console.log(this.title, this.content);
+            console.log(this.title, this.content, typeof this.due);
+        }
+    },
+    computed: {
+        formattedDate():string{
+            return this.due ? moment(this.due).format("Do MMMM YYYY") : "";
         }
     }
 })
