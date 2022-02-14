@@ -39,6 +39,11 @@
           <p class="white--text text-subtitle-1 mt-1">Gaiseric</p>
         </v-col>
       </v-row >
+      <v-row>
+        <v-col class="mt-4 mb-3 text-center">
+           <Popup/>
+        </v-col>
+      </v-row>
       <v-list dark>
         <v-list-item v-for="link in links" :key="link.text" router :to="link.route">
           <v-list-item-action><v-icon>{{link.icon}}</v-icon></v-list-item-action>
@@ -55,8 +60,10 @@
 
 <script lang="ts">
 import Vue from "vue";
+import Popup from "./Popup.vue"
 export default Vue.extend({
   name: "Navbar",
+  components: {Popup},
   data() {
     return {
       drawer: false,
