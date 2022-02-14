@@ -1,6 +1,6 @@
 <template>
     <div class="text-center">
-    <v-dialog max-width="600">
+    <v-dialog max-width="600" v-model="dialog">
       <template v-slot:activator="{ on }">
         <v-btn class="success" dark v-on="on">Add New Project</v-btn>
       </template>
@@ -24,7 +24,7 @@
                     <v-date-picker v-model="due"></v-date-picker>
                 </v-menu>
                 <v-spacer></v-spacer>
-                <v-btn class="success mx-0 mt-3" @click="submit">Add Project</v-btn>
+                <v-btn class="success mx-0 mt-3" @click="submit" :loading="loading">Add Project</v-btn>
             </v-form>
         </v-card-text>
       </v-card>
@@ -50,12 +50,15 @@ export default Vue.extend({
             due: null as null | string,
             inputRules: [
                 (v:string) => v && v.length >= 3 || 'Minimum length is 3 characters'
-            ]
+            ],
+            loading: false,
+            dialog: false
         }
     },
     methods: {
         async submit():Promise<void>{
             if((this.$refs.form as VForm).validate()){
+                this.loading = true;
                 const project = {
                     title: this.title,
                     content: this.content,
@@ -64,7 +67,8 @@ export default Vue.extend({
                     status: "ongoing"
                 }
                 db.collection("projects").add(project).then(()=>{
-                    console.log("Added to db");
+                    this.loading = false;
+                    this.dialog = false;
                 })
             }
         }
