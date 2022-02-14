@@ -1,15 +1,15 @@
 <template>
     <div class="text-center">
-    <v-dialog v-model="dialog" max-width="600">
+    <v-dialog max-width="600">
       <template v-slot:activator="{ on }">
         <v-btn class="success" dark v-on="on">Add New Project</v-btn>
       </template>
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>Add a New Project</v-card-title>
         <v-card-text>
-            <v-form class="px-3">
-                <v-text-field label="Title" v-model="title" prepend-icon="mdi-folder"></v-text-field>
-                <v-textarea label="Information" v-model="content" prepend-icon="mdi-pencil"></v-textarea>
+            <v-form class="px-3" ref="form">
+                <v-text-field label="Title" v-model="title" prepend-icon="mdi-folder" :rules="inputRules"></v-text-field>
+                <v-textarea label="Information" v-model="content" prepend-icon="mdi-pencil" :rules="inputRules"></v-textarea>
                 <v-menu>
                     <template v-slot:activator="{ on, attrs }">
                         <v-text-field
@@ -18,6 +18,7 @@
                             v-bind="attrs"
                             v-on="on"
                             :value="formattedDate"
+                            :rules="inputRules"
                         ></v-text-field>
                     </template>
                     <v-date-picker v-model="due"></v-date-picker>
@@ -34,19 +35,26 @@
 <script lang="ts">
 import Vue from 'vue'
 import moment from 'moment'
-
+type VForm = Vue & {
+    validate: () => boolean
+}
 export default Vue.extend({
     name: "Popup",
     data(){
         return {
             title: "",
             content: "",
-            due: null as null | string
+            due: null as null | string,
+            inputRules: [
+                (v:string) => v && v.length >= 3 || 'Minimum length is 3 characters'
+            ]
         }
     },
     methods: {
         submit(){
-            console.log(this.title, this.content, typeof this.due);
+            if((this.$refs.form as VForm).validate()){
+                console.log(this.title, this.content, typeof this.due);
+            }
         }
     },
     computed: {
